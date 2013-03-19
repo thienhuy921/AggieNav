@@ -14,8 +14,7 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int TestText1=0x7f070014;
-        public static final int bCloseApp=0x7f070016;
+        public static final int bCloseApp=0x7f070015;
         public static final int bSubmit=0x7f070013;
         public static final int boxBldg1=0x7f070004;
         public static final int boxBldg2=0x7f070006;
@@ -29,9 +28,9 @@ public final class R {
         public static final int boxTime4=0x7f07000b;
         public static final int boxTime5=0x7f07000d;
         public static final int boxTime6=0x7f07000f;
-        public static final int currentLoc=0x7f070015;
+        public static final int currentLoc=0x7f070014;
         public static final int goodbyeText=0x7f070001;
-        public static final int menu_settings=0x7f070017;
+        public static final int menu_settings=0x7f070016;
         public static final int radioComb_=0x7f070012;
         public static final int radioGroup1=0x7f070010;
         public static final int radioWalk=0x7f070011;
