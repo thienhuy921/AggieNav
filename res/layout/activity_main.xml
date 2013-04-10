@@ -186,14 +186,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_below="@id/radioGroup1"
                 android:text="@string/button_submit" />
-
-            <EditText
-                android:id="@+id/TestText1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/boxBldg6" />
-
+            
         </RelativeLayout>
     
 </ScrollView>
