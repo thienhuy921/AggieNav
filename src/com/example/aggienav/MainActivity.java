@@ -1,5 +1,6 @@
 package com.example.aggienav;
 
+import java.util.LinkedList;
 import java.util.Vector;
 
 import com.example.aggienav.R;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -28,9 +30,37 @@ public class MainActivity extends Activity {
 	//EditText testText1;
 	
 	/***Real Elements*****/
-	Vector<Building> bldg = new Vector<Building>(250,100);	
+	Vector<Building> bldg = new Vector<Building>(250,100);
+	Vector<String> namesEntered = new Vector<String>(6,6);// Vector storing building abbreviations that user has entered
+	
+	Vector<LinkedList<BusStop>> Routes = new Vector<LinkedList<BusStop>>(8,10);
+	
+	LinkedList<BusStop> Route1 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route2 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route3 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route4 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route5 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route6 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route7 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route8 = new LinkedList<BusStop>();
 	
 	
+	
+	/*********Search*************/
+	
+	/*public static boolean SearchBusStopInRoute(LinkedList<BusStop> _route, BusStop _busStop){
+		
+		BusStop current = _route.getFirst();
+		while(current != null){
+			if(current.getName()==_busStop.getName()){
+				return true;
+			}
+			current = current.getNext();
+		}
+		
+		return false;
+	}*/
+		
 	/********/
 	
 		
@@ -47,11 +77,62 @@ public class MainActivity extends Activity {
 		txtBldg5 = (EditText) findViewById(R.id.boxBldg5);
 		txtBldg6 = (EditText) findViewById(R.id.boxBldg6);
 		
+		
+		
+		
+		
+		
+		
+		
+		/*while(true){
+			if(!(txtBldg[i].equal(""))){
+				bdEntered.pushback("a");
+			}
+			break;
+		}*/
+		
+		//Route.add(A); // test
+		//Log.i("Route: ", "this is my string");
+		
+		//Route.add(new BusStop(1000,2000,"Bus Stop B"));
+		//mystr = Route.get(1).getName();
+		
+		Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
+		Route1.add(new BusStop(30.619085,-96.339333,"Ross_Spence"));
+		Route1.add(new BusStop(30.617848,-96.341141,"Ross_Ireland"));
+		Route1.add(new BusStop(30.617816,-96.343317,"Asbury Water Tower"));
+		Route1.add(new BusStop(30.612183,-96.348499,"Wehner"));
+		Route1.add(new BusStop(30.609889,-96.346956,"Kleberg"));
+		Route1.add(new BusStop(30.605657,-96.347432,"Reed Arena"));
+		Route1.add(new BusStop(30.60691,-96.34721,"Lot 100a/b"));
+		Route1.add(new BusStop(30.611922,-96.340671,"Kodus"));
+		
+		Route2.add(new BusStop(30.616458,-96.34366,"Fish Pond"));
+		Route2.add(new BusStop(30.60933,-96.353764,"Rural Public Health"));
+		Route2.add(new BusStop(30.597889,-96.395351,"Health Science Center"));
+		Route2.add(new BusStop(30.60933,-96.353764,"Rural Public Health"));
+		
+		Route3.add(new BusStop(30.614138,-96.341707,"MSC"));
+		Route3.add(new BusStop(30.617661,-96.341203,"Ross_Ireland")); // khac voi Ross_Ireland o Route 1
+		Route3.add(new BusStop(30.618926,-96.339379,"Ross_Spence"));
+		Route3.add(new BusStop(30.619798,-96.338065,"Ross_Bizzell"));
+		Route3.add(new BusStop(30.620932,-96.338062,"Wisenbaker"));
+		Route3.add(new BusStop(30.611999,30.611999,"Wehner S"));
+		
+		/***** Try search operation!********/
+		/*BusStop A = new BusStop(30.611999,30.611999,"Wehner S");
+		if(Route3.contains(A)){
+			Log.i("Found","BusStop A");
+		}else Log.i("Not Found","BusStop A");*/
+		
+		// return Not found because linkedlist.contains us equals() method -> need to overide equals()
+		/***********************************/
+		
 				
 		bldg.add(new Building(30.61348497,-96.34841648,"ONRP"));
 		bldg.add(new Building(30.60479491,-96.35791033,"LYNNTECH BLDG"));
 		bldg.add(new Building(30.61607031,-96.34069172,"ACAD"));
-		bldg.add(new Building(30.6121855,-96.3345019,"AEPM"));
+		bldg.add(new Building(30.6121855,-96.3345019,"ADAM"));
 		bldg.add(new Building(30.61411285,-96.34901729,"AEPM"));
 		bldg.add(new Building(30.61348497,-96.34841648,"AESH"));
 		bldg.add(new Building(30.60545977,-96.35091513,"AGLS"));
@@ -308,33 +389,59 @@ public class MainActivity extends Activity {
 				 */
 
 				/************
-				 * Construct urlString to request direction*********** Does not
+				 * Construct uriString to request direction*********** Does not
 				 * work for all Abbrs. eg. BICH
 				 *******************/
 
-				/*
-				 * dest1 = dest1 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 * dest2 = dest2 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 * dest3 = dest3 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 * dest4 = dest4 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 * dest5 = dest5 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 * dest6 = dest6 +
-				 * ", Texas A%26M University, College Station, Texas 77840";
-				 */
+				
 
 				// while (true) {
 
 				// re-enter bldg names
+				
+				namesEntered.add(txtBldg1.getText().toString());
+				namesEntered.add(txtBldg2.getText().toString());
+				namesEntered.add(txtBldg3.getText().toString());
+				namesEntered.add(txtBldg4.getText().toString());
+				namesEntered.add(txtBldg5.getText().toString());
+				namesEntered.add(txtBldg6.getText().toString());
+				
+				/*bName1 = txtBldg1.getText().toString();
+				bName2 = txtBldg2.getText().toString();*/
+				
+				/**********construst uri string***************/
+				
+				
+				String uri="http://maps.google.com/maps?";
+				
+				
+				for(int i=0; i<=5; i++){
+					if(!namesEntered.get(i).equals("")){
+						for (int j = 0; j <= bldg.capacity() - 1; j++){
+							if (bldg.get(j).getName().equalsIgnoreCase(namesEntered.get(i))){
+								if(i==0){
+									uri = uri + "saddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									break;
+								}
+								else if(i==1){
+									uri = uri + "&daddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									break;
+								}
+								else{
+									uri = uri + " to: " + bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									break;
+								}
+							}
+						}
+					}
+					else break;
+				}
+				
+				uri = uri + "&dirflg=w";
+				
+				/******************between 2 locations**************************/
 
-				bName1 = txtBldg1.getText().toString();
-				bName2 = txtBldg2.getText().toString();
-
-				for (int i = 0; i <= bldg.capacity() - 1; i++) {
+				/*for (int i = 0; i <= bldg.capacity() - 1; i++) {
 					if (dest1 == null || dest2 == null) {
 						if (bldg.get(i).getName().equalsIgnoreCase(bName1)) {
 							dest1 = bldg.get(i).getLat() + ","
@@ -346,15 +453,20 @@ public class MainActivity extends Activity {
 						}
 					} else
 						break;
-				}
+				}*/
 
-				if (dest1 != null && dest2 != null) {
+				if (!namesEntered.get(0).equals("") && !namesEntered.get(1).equals("")) {
 					/**************** get direction form input *******************/
-					Intent intent = new Intent(
+					/*Intent intent = new Intent(
 							android.content.Intent.ACTION_VIEW, Uri
 									.parse("http://maps.google.com/maps?"
 											+ "saddr=" + dest1 + "&daddr="
-											+ dest2 + "&dirflg=w"));
+											+ dest2 + "&dirflg=w"));*/
+					
+					/*String tempuri = "https://maps.google.com/maps?saddr=Stasney St&daddr=30.607657,-96.344454 to:30.62063,-96.340742 to:30.619046,-96.339186";
+					// Stasney -> REC -> Zachry -> HRBB*/ 
+					
+					Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
 
 					startActivity(intent);
 				} else { // alert(toast a message) & ask user to re enter bldgs
@@ -428,6 +540,12 @@ public class MainActivity extends Activity {
 				 * +"&daddr="+ dest2 + "%2bto:" + dest3 + "%2bto:" + dest4 +
 				 * "%2bto:" + dest5 + "%2bto:" + dest6;
 				 */
+				
+				 /*String uri = "http://maps.google.com/maps?" + "saddr="+ dest1 +"&daddr="+ dest2 + " to:" + dest3 + " to:" + dest4 +
+				  " to:" + dest5 + " to:" + dest6;*/
+				
+				
+				 
 
 				/*
 				 * String uri =
