@@ -8,6 +8,10 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
     <uses-permission android:name="android.permission.INTERNET"/>
+    
+    <instrumentation android:name="android.test.InstrumentationTestRunner"
+    	android:targetPackage="com.example.aggienav"
+    	android:label="AggieNav" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <uses-library android:name="com.google.android.maps" />
+        <uses-library android:name="android.test.runner" />
         <activity
             android:name="com.example.aggienav.MainActivity"
             android:label="@string/app_name" >
