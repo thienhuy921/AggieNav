@@ -1,9 +1,10 @@
 package com.example.aggienav;
 
-import com.google.android.maps.GeoPoint;
+//import com.google.android.maps.GeoPoint;
 
 public class Building {
-	private String abbr; // building abbr
+	public String abbr; // building abbr
+	public String name;
 	//private GeoPoint loc;	
 	private double lat;
 	private double lon;	

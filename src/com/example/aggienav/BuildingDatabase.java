@@ -1,11 +1,12 @@
 package com.example.aggienav;
+
 import jxl.*;
 import jxl.read.biff.BiffException;
 
 import java.io.*;
 
 public class BuildingDatabase extends Building {
-	Building[]BDB = new Building[100];
+	Building[]BDB = new Building[233];
 	private String inputFile;
 
 	  public void setInputFile(String inputFile) {
@@ -20,31 +21,39 @@ public class BuildingDatabase extends Building {
 	      // Get the first sheet
 	      Sheet sheet = w.getSheet(0);
 	      // Loop over first 10 column and lines
-
-	      for (int j = 0; j < sheet.getColumns(); j++) {
-	        for (int i = 0; i < sheet.getRows(); i++) {
-	          Cell cell = sheet.getCell(j, i);
-	          CellType type = cell.getType();
-	          if (type == CellType.LABEL) {
-	            System.out.println("I got a label "
-	                + cell.getContents());
-	          }
-
-	          if (type == CellType.NUMBER) {
-	            System.out.println("I got a number "
-	                + cell.getContents());
-	          }
-
+	      Cell a, b, c, d, e, f, g;
+	      String stringa, stringb, stringe;
+	      double latc, lond, latf, lon_g;
+	      NumberCell cnum, dnum, fnum, gnum;
+	           
+	      
+	        for (int i = 2; i < 230; i++) {
+	          a = sheet.getCell(0, i);
+	          stringa = a.getContents();
+	          BDB[i-2].name = stringa;
+	          
+	          b = sheet.getCell(1, i);
+	          stringb = b.getContents();
+	          BDB[i-2].abbr = stringb;
+	          
+	          c = sheet.getCell(2, i);
+	          cnum = (NumberCell)c;
+	          latc = cnum.getValue();
+	          
+	          d = sheet.getCell(2, i);
+	          dnum = (NumberCell)d;
+	          lond = dnum.getValue();
+	          	               
 	        }
-	      }
+	      
 	    } catch (BiffException e) {
 	      e.printStackTrace();
 	    }
 	  }
 
-	  public static void main(String[] args) throws IOException {
-	    ReadExcel test = new ReadExcel();
-	    test.setInputFile("c:/temp/lars.xls");
+	  /*public static void main(String[] args) throws IOException {
+	    BuildingDatabase test = new BuildingDatabase();
+	    test.setInputFile("Building_GPS_locations.xlsx");
 	    test.read();
-	  }
+	  }*/
 }
