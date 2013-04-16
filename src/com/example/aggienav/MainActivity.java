@@ -1,6 +1,8 @@
 package com.example.aggienav;
 
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 import com.example.aggienav.R;
@@ -11,10 +13,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -22,14 +26,10 @@ public class MainActivity extends Activity {
 	String dest1, dest2, dest3, dest4, dest5, dest6;
 	String bName1,bName2;
 
-	// Vector<String> dest = new Vector<String>();
-	// Vector<EditText> txtBldg;
-
+	
 	EditText txtBldg1, txtBldg2, txtBldg3, txtBldg4, txtBldg5, txtBldg6;
 
-	//EditText testText1;
 	
-	/***Real Elements*****/
 	Vector<Building> bldg = new Vector<Building>(250,100);
 	Vector<String> namesEntered = new Vector<String>(6,6);// Vector storing building abbreviations that user has entered
 	
@@ -76,26 +76,13 @@ public class MainActivity extends Activity {
 		txtBldg4 = (EditText) findViewById(R.id.boxBldg4);
 		txtBldg5 = (EditText) findViewById(R.id.boxBldg5);
 		txtBldg6 = (EditText) findViewById(R.id.boxBldg6);
+			
 		
 		
-		
-		
-		
-		
-		
-		
-		/*while(true){
-			if(!(txtBldg[i].equal(""))){
-				bdEntered.pushback("a");
-			}
-			break;
-		}*/
 		
 		//Route.add(A); // test
 		//Log.i("Route: ", "this is my string");
 		
-		//Route.add(new BusStop(1000,2000,"Bus Stop B"));
-		//mystr = Route.get(1).getName();
 		
 		Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
 		Route1.add(new BusStop(30.619085,-96.339333,"Ross_Spence"));
@@ -126,7 +113,28 @@ public class MainActivity extends Activity {
 		}else Log.i("Not Found","BusStop A");*/
 		
 		// return Not found because linkedlist.contains us equals() method -> need to overide equals()
+		
 		/***********************************/
+		
+		/*BusStop current = Route3.getFirst();
+		while(!current.getName().equalsIgnoreCase("MSC")){
+			if(current.getNext()==null){
+				Log.i("Not Found","BusStop MSC");
+			}else{
+				current = current.getNext();	
+			}				
+		}
+		Log.i("Found","MSC");*/
+		
+		/*Iterator<BusStop> current = Route3.iterator();
+		while(!((BusStop) current).getName().equalsIgnoreCase("MSC")){
+			if(current.next()==null){
+				Log.i("Not Found","BusStop MSC");
+			}else{
+				current = (Iterator<BusStop>) current.next();	
+			}				
+		}
+		Log.i("Found","MSC");*/
 		
 				
 		bldg.add(new Building(30.61348497,-96.34841648,"ONRP"));
@@ -360,7 +368,9 @@ public class MainActivity extends Activity {
 		bldg.add(new Building(30.56564926,-96.37088137,"TPSP"));
 		bldg.add(new Building(30.61511696,-96.34227192,"YMCA"));
 		bldg.add(new Building(30.62125784,-96.34020041,"ZACH"));
-
+		
+		
+		
 
 		bSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -371,67 +381,72 @@ public class MainActivity extends Activity {
 				// Intent MapIntent = new Intent(MainActivity.this,
 				// MapActivity.class);
 				// startActivity(MapIntent);
-				/*
-				 * Intent intent = new
-				 * Intent(android.content.Intent.ACTION_VIEW,
-				 * Uri.parse("http://maps.google.com/maps?" +
-				 * "saddr=30.623252,-96.347008&daddr=30.618169,-96.341209"));
-				 */
-
-				// get value from EditText View
-				/*
-				 * dest1 = txtBldg1.getText().toString(); dest2 =
-				 * txtBldg2.getText().toString(); dest3 =
-				 * txtBldg3.getText().toString(); dest4 =
-				 * txtBldg4.getText().toString(); dest5 =
-				 * txtBldg5.getText().toString(); dest6 =
-				 * txtBldg6.getText().toString();
-				 */
-
-				/************
-				 * Construct uriString to request direction*********** Does not
-				 * work for all Abbrs. eg. BICH
-				 *******************/
-
+										
 				
-
-				// while (true) {
-
-				// re-enter bldg names
+				getBuildingNames(); // get user inputs				
 				
-				namesEntered.add(txtBldg1.getText().toString());
-				namesEntered.add(txtBldg2.getText().toString());
-				namesEntered.add(txtBldg3.getText().toString());
-				namesEntered.add(txtBldg4.getText().toString());
-				namesEntered.add(txtBldg5.getText().toString());
-				namesEntered.add(txtBldg6.getText().toString());
-				
-				/*bName1 = txtBldg1.getText().toString();
-				bName2 = txtBldg2.getText().toString();*/
-				
-				/**********construst uri string***************/
+								
+				/**********construst uri string for multiple locations (waypoints) ***************/
 				
 				
+				int nameCount = 0;
 				String uri="http://maps.google.com/maps?";
 				
 				
+				
 				for(int i=0; i<=5; i++){
-					if(!namesEntered.get(i).equals("")){
-						for (int j = 0; j <= bldg.capacity() - 1; j++){
+					if(!namesEntered.get(i).equals("")){ // if there is some text in text box
+						boolean notfound = true;
+								
+						for (int j = 0; j <= bldg.size() - 1; j++){
 							if (bldg.get(j).getName().equalsIgnoreCase(namesEntered.get(i))){
 								if(i==0){
 									uri = uri + "saddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									notfound = false;
+									nameCount++;
 									break;
 								}
 								else if(i==1){
 									uri = uri + "&daddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									notfound = false;
+									nameCount++;
 									break;
 								}
 								else{
 									uri = uri + " to: " + bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									notfound = false;
+									nameCount++;
 									break;
 								}
-							}
+							}							
+						}
+						if(notfound){
+						//ask user to re-enter names
+						Toast toast = Toast.makeText(getApplicationContext(), "Can not find building \""+ namesEntered.get(i) + "\"!", Toast.LENGTH_LONG);
+						toast.setGravity(Gravity.CENTER, 0, 0);
+						toast.show();
+						
+						namesEntered.clear();
+						nameCount = 0;
+						
+						if(i==0){
+							txtBldg1.requestFocus();														
+						}else if(i==1){
+							txtBldg2.requestFocus();							
+						}else if(i==2){
+							txtBldg3.requestFocus();							
+						}else if(i==3){
+							txtBldg4.requestFocus();							
+						}else if(i==4){
+							txtBldg5.requestFocus();							
+						}else if(i==5){
+							txtBldg6.requestFocus();							
+						}
+						
+						
+						
+						/*******make the app to focus on name that was not found instead of clearing all inputs********/
+						break;
 						}
 					}
 					else break;
@@ -439,128 +454,47 @@ public class MainActivity extends Activity {
 				
 				uri = uri + "&dirflg=w";
 				
-				/******************between 2 locations**************************/
-
-				/*for (int i = 0; i <= bldg.capacity() - 1; i++) {
-					if (dest1 == null || dest2 == null) {
-						if (bldg.get(i).getName().equalsIgnoreCase(bName1)) {
-							dest1 = bldg.get(i).getLat() + ","
-									+ bldg.get(i).getLon();
-						}// (bName1 must not != bName2)
-						else if (bldg.get(i).getName().equalsIgnoreCase(bName2)) {
-							dest2 = bldg.get(i).getLat() + ","
-									+ bldg.get(i).getLon();
-						}
-					} else
-						break;
-				}*/
-
-				if (!namesEntered.get(0).equals("") && !namesEntered.get(1).equals("")) {
-					/**************** get direction form input *******************/
-					/*Intent intent = new Intent(
-							android.content.Intent.ACTION_VIEW, Uri
-									.parse("http://maps.google.com/maps?"
-											+ "saddr=" + dest1 + "&daddr="
-											+ dest2 + "&dirflg=w"));*/
-					
-					/*String tempuri = "https://maps.google.com/maps?saddr=Stasney St&daddr=30.607657,-96.344454 to:30.62063,-96.340742 to:30.619046,-96.339186";
-					// Stasney -> REC -> Zachry -> HRBB*/ 
-					
-					Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
-
-					startActivity(intent);
-				} else { // alert(toast a message) & ask user to re enter bldgs
-							// name
-
-				}
-				/*
-				 * if (dest1 != null && dest2 != null) { break; } else {
-				 * AlertDialog alert = new
-				 * AlertDialog.Builder(MainActivity.this).create();
-				 * alert.setTitle("Alert!"); alert.setCancelable(false);
-				 * alert.setMessage
-				 * ("Building abbr. not found! Please re-enter Building abbr. !"
-				 * );
-				 * 
-				 * alert.setPositiveButton(); alert.setNegativeButton();
-				 * //alert.show(); }
-				 */
-
-				// }
-
-				// boxBldg1.requestfocus();
-				/*
-				 * for (int i = 0; i <= bldg.capacity(); i++) { if (dest1 ==
-				 * null || dest2 == null) { if
-				 * (bldg.get(i).getName().equalsIgnoreCase(bName1)) { dest1 =
-				 * bldg.get(i).getLon() + "," + bldg.get(i).getLat(); }//
-				 * (bName1 must not != bName2) else if
-				 * (bldg.get(i).getName().equalsIgnoreCase(bName2)) { dest2 =
-				 * bldg.get(i).getLon() + "," + bldg.get(i).getLat(); } } else
-				 * break; }
-				 * 
-				 * AlertDialog alert = new
-				 * AlertDialog.Builder(MainActivity.this).create();
-				 * //alert.setTitle("Alert!"); alert.setMessage(
-				 * "Building abbr. not found! Please re-enter Building abbr. !"
-				 * ); alert.show(); }
-				 */
-				/*
-				 * if (dest1 == null || dest2 == null){ // ask user to re-enter
-				 * bldg abbrs call getBldgNames(); getBldgNames(){ clearText
-				 * fields wait for user to re-enter BNames and click submit }
-				 * 
-				 * }
-				 */
-
-				/*
-				 * if (dest1 == null){ dest1 = bName1 +
-				 * ", Texas A%26M University, College Station, Texas 77840"; }
-				 * if (dest2 == null){ dest2 = bName2 +
-				 * ", Texas A%26M University, College Station, Texas 77840"; }
-				 */
-
-				// testText1 = (EditText) findViewById(R.id.TestText1);
-
-				/******** get direction using lon & lat ********/
-				/*
-				 * Intent intent = new
-				 * Intent(android.content.Intent.ACTION_VIEW,
-				 * Uri.parse("http://maps.google.com/maps?" + "saddr=" +
-				 * bldg.get(0).getLon() +","+bldg.get(0).getLat() + "&daddr=" +
-				 * bldg.get(1).getLon() +","+bldg.get(1).getLat() +
-				 * "&dirflg=w"));
-				 */
-
-				// startActivity(intent);
-
-				/************* get direction with way points ***********/
-				/*
-				 * String uri = "http://maps.google.com/maps?" + "saddr="+ dest1
-				 * +"&daddr="+ dest2 + "%2bto:" + dest3 + "%2bto:" + dest4 +
-				 * "%2bto:" + dest5 + "%2bto:" + dest6;
-				 */
+				/*************************************************************************/
 				
-				 /*String uri = "http://maps.google.com/maps?" + "saddr="+ dest1 +"&daddr="+ dest2 + " to:" + dest3 + " to:" + dest4 +
-				  " to:" + dest5 + " to:" + dest6;*/
+				/**************** request direction  *******************/
 				
 				
-				 
+				
+				if (nameCount>=2) {					
+					launchMap(uri);						
+				} 
+				
+				/******************************************************/
 
-				/*
-				 * String uri =
-				 * "https://maps.google.com/maps?saddr=Stasney St&daddr=30.607657,-96.344454 %2b to:30.62063,-96.340742 %2b to:30.619185,-96.342528"
-				 * ; Intent intent = new
-				 * Intent(android.content.Intent.ACTION_VIEW,Uri.parse(uri));
-				 */
+				
 
-				// startActivity(intent);
-
-				// testText1.setText(uri);
 			}
-		});
 
-	}// end of OnClickListener
+			private void launchMap(String uri) { // request direction
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+
+				startActivity(intent);
+
+			}
+
+			
+		}); // end of SetOnClickListener
+
+	}// end of onCreate
+
+	private void getBuildingNames() {
+		// TODO Auto-generated method stub
+		
+		namesEntered.clear();// clear old inputs
+		
+		namesEntered.add(txtBldg1.getText().toString());
+		namesEntered.add(txtBldg2.getText().toString());
+		namesEntered.add(txtBldg3.getText().toString());
+		namesEntered.add(txtBldg4.getText().toString());
+		namesEntered.add(txtBldg5.getText().toString());
+		namesEntered.add(txtBldg6.getText().toString());
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
