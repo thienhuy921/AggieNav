@@ -5,12 +5,12 @@ import java.util.Date;
 
 // Bus Stop is a node in a linked list which represents a Bus route.
 public class BusStop {
-	private String name;
+	public String name;
 	//private GeoPoint loc;
-	private double lat;
-	private double lon;
-	private BusStop nextBusStop;
-	private int timeToNext; //time to next stop in seconds
+	public double lat;
+	public double lon;
+	public BusStop nextBusStop;
+	public int timeToNext; //time to next stop in seconds
 	
 	public BusStop(){ // Constructor
 		name = "";
