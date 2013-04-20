@@ -35,16 +35,22 @@ public class MainActivity extends Activity {
 	
 	Vector<LinkedList<BusStop>> Routes = new Vector<LinkedList<BusStop>>(8,10);
 	
-	LinkedList<BusStop> Route1 = new LinkedList<BusStop>();
+	/*LinkedList<BusStop> Route1 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route2 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route3 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route4 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route5 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route6 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route7 = new LinkedList<BusStop>();
-	LinkedList<BusStop> Route8 = new LinkedList<BusStop>();
-	
-	
+	LinkedList<BusStop> Route8 = new LinkedList<BusStop>();*/
+	Route Route1 = new Route();
+	Route Route2 = new Route();
+	Route Route3 = new Route();
+	Route Route4 = new Route();
+	Route Route5 = new Route();
+	Route Route6 = new Route();
+	Route Route7 = new Route();
+	Route Route8 = new Route();
 	
 	/*********Search*************/
 	
@@ -96,8 +102,27 @@ public class MainActivity extends Activity {
 		
 		//Route.add(new BusStop(1000,2000,"Bus Stop B"));
 		//mystr = Route.get(1).getName();
+		BusStopDatabase BSD= new BusStopDatabase();
+		Route tempRoute = new Route();
 		
-		Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
+		tempRoute = BSD.collectStops(0);
+		Route1 = tempRoute;
+		tempRoute = BSD.collectStops(1);
+		Route2 = tempRoute;
+		tempRoute = BSD.collectStops(2);
+		Route3 = tempRoute;
+		tempRoute = BSD.collectStops(3);
+		Route4 = tempRoute;
+		tempRoute = BSD.collectStops(4);
+		Route5 = tempRoute;
+		tempRoute = BSD.collectStops(5);
+		Route6 = tempRoute;
+		tempRoute = BSD.collectStops(6);
+		Route7 = tempRoute;
+		tempRoute = BSD.collectStops(7);
+		Route8 = tempRoute;
+		
+		/*Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
 		Route1.add(new BusStop(30.619085,-96.339333,"Ross_Spence"));
 		Route1.add(new BusStop(30.617848,-96.341141,"Ross_Ireland"));
 		Route1.add(new BusStop(30.617816,-96.343317,"Asbury Water Tower"));
@@ -117,7 +142,7 @@ public class MainActivity extends Activity {
 		Route3.add(new BusStop(30.618926,-96.339379,"Ross_Spence"));
 		Route3.add(new BusStop(30.619798,-96.338065,"Ross_Bizzell"));
 		Route3.add(new BusStop(30.620932,-96.338062,"Wisenbaker"));
-		Route3.add(new BusStop(30.611999,30.611999,"Wehner S"));
+		Route3.add(new BusStop(30.611999,30.611999,"Wehner S"));*/
 		
 		/***** Try search operation!********/
 		/*BusStop A = new BusStop(30.611999,30.611999,"Wehner S");
