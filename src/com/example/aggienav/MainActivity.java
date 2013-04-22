@@ -7,10 +7,14 @@ import java.util.Vector;
 
 import com.example.aggienav.R;
 import com.example.aggienav.MainActivity;
+
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
@@ -33,7 +37,7 @@ public class MainActivity extends Activity {
 	Vector<Building> bldg = new Vector<Building>(250,100);
 	Vector<String> namesEntered = new Vector<String>(6,6);// Vector storing building abbreviations that user has entered
 	
-	Vector<LinkedList<BusStop>> Routes = new Vector<LinkedList<BusStop>>(8,10);
+	/*Vector<LinkedList<BusStop>> Routes = new Vector<LinkedList<BusStop>>(8,10);
 	
 	LinkedList<BusStop> Route1 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route2 = new LinkedList<BusStop>();
@@ -42,7 +46,16 @@ public class MainActivity extends Activity {
 	LinkedList<BusStop> Route5 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route6 = new LinkedList<BusStop>();
 	LinkedList<BusStop> Route7 = new LinkedList<BusStop>();
-	LinkedList<BusStop> Route8 = new LinkedList<BusStop>();
+	LinkedList<BusStop> Route8 = new LinkedList<BusStop>();*/
+	
+	Route route1 = new Route();
+	Route route2 = new Route();
+	Route route3 = new Route();
+	Route route4 = new Route();
+	Route route5 = new Route();
+	Route route6 = new Route();
+	Route route7 = new Route();
+	Route route8 = new Route();
 	
 	
 	
@@ -83,8 +96,53 @@ public class MainActivity extends Activity {
 		//Route.add(A); // test
 		//Log.i("Route: ", "this is my string");
 		
+		route1.insertLast(new BusStop(30.619085,-96.339333,"Ross_Spence"));
+		route1.insertLast(new BusStop(30.617848,-96.341141,"Ross_Ireland"));
+		route1.insertLast(new BusStop(30.617816,-96.343317,"Asbury Water Tower"));
+		route1.insertLast(new BusStop(30.612183,-96.348499,"Wehner"));
+		route1.insertLast(new BusStop(30.609889,-96.346956,"Kleberg"));
+		route1.insertLast(new BusStop(30.605657,-96.347432,"Reed Arena"));
+		route1.insertLast(new BusStop(30.60691,-96.34721,"Lot 100a/b"));
+		route1.insertLast(new BusStop(30.611922,-96.340671,"Kodus"));
 		
-		Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
+		route2.insertLast(new BusStop(30.616458,-96.34366,"Fish Pond"));
+		route2.insertLast(new BusStop(30.60933,-96.353764,"Rural Public Health"));
+		route2.insertLast(new BusStop(30.597889,-96.395351,"Health Science Center"));
+		route2.insertLast(new BusStop(30.60933,-96.353764,"Rural Public Health"));
+		
+		route3.insertLast(new BusStop(30.614138,-96.341707,"MSC"));
+		route3.insertLast(new BusStop(30.617661,-96.341203,"Ross_Ireland")); // khac voi Ross_Ireland o Route 1
+		route3.insertLast(new BusStop(30.618926,-96.339379,"Ross_Spence"));
+		route3.insertLast(new BusStop(30.619798,-96.338065,"Ross_Bizzell"));
+		route3.insertLast(new BusStop(30.620932,-96.338062,"Wisenbaker"));
+		route3.insertLast(new BusStop(30.611999,30.611999,"Wehner S"));
+		
+		route4.insertLast(new BusStop(30.616458,-96.34366,"Fish Pond"));
+		route4.insertLast(new BusStop(30.617661,-96.341203,"Ross_Ireland"));
+		route4.insertLast(new BusStop(30.618926,-96.339379,"Ross_Spence"));
+		route4.insertLast(new BusStop(30.619798,-96.338065,"Ross_Bizzell"));
+		route4.insertLast(new BusStop(30.62089,-96.33805,"WERC"));
+		route4.insertLast(new BusStop(30.62651,-96.34324,"Hensel_Ball"));
+		route4.insertLast(new BusStop(30.62892,-96.34186,"Hensel_WX_Row"));
+		route4.insertLast(new BusStop(30.62875,-96.33922,"Hensel_Moore"));
+		route4.insertLast(new BusStop(30.62743,-96.34068,"Community Center"));
+		route4.insertLast(new BusStop(30.62516,-96.34069,"Moore_Office"));
+		route4.insertLast(new BusStop(30.62468,-96.3401,"Moore_Haltom"));
+		route4.insertLast(new BusStop(30.62414,-96.33946,"Moore_Front"));
+		route4.insertLast(new BusStop(30.62093,-96.33854,"WERC"));
+		route4.insertLast(new BusStop(30.619085,-96.339333,"Ross_Spence"));
+		route4.insertLast(new BusStop(30.617848,-96.341141,"Ross_Ireland"));
+		
+		/**************/
+		if(route4.contains("WERC")){
+			Log.i("Found", "WERC");
+		}else Log.i("Not Found", "WERC");
+		/*************/
+		
+		
+		
+		
+		/*Route1.add(new BusStop(30.614992,-96.337684,"Commons"));
 		Route1.add(new BusStop(30.619085,-96.339333,"Ross_Spence"));
 		Route1.add(new BusStop(30.617848,-96.341141,"Ross_Ireland"));
 		Route1.add(new BusStop(30.617816,-96.343317,"Asbury Water Tower"));
@@ -104,7 +162,7 @@ public class MainActivity extends Activity {
 		Route3.add(new BusStop(30.618926,-96.339379,"Ross_Spence"));
 		Route3.add(new BusStop(30.619798,-96.338065,"Ross_Bizzell"));
 		Route3.add(new BusStop(30.620932,-96.338062,"Wisenbaker"));
-		Route3.add(new BusStop(30.611999,30.611999,"Wehner S"));
+		Route3.add(new BusStop(30.611999,30.611999,"Wehner S"));*/
 		
 		/***** Try search operation!********/
 		/*BusStop A = new BusStop(30.611999,30.611999,"Wehner S");
@@ -466,7 +524,27 @@ public class MainActivity extends Activity {
 				
 				/******************************************************/
 
+				/****test with user current location***/
 				
+				/*String uri1="http://maps.google.com/maps?";
+								
+				LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+				
+				Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);  
+
+				if(location == null){
+				    Log.i("error:","No Location");
+				}
+				else{
+					uri1 = uri1+"saddr="+location.getLatitude()+","+location.getLongitude()+ "&daddr="+ "texas a&m university college station" + "&dirflg=w";
+					
+				}
+								
+				
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri1));
+
+				startActivity(intent);*/
+				/*******/
 
 			}
 
