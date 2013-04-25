@@ -23,10 +23,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.location.Criteria;
+import android.location.LocationListener;
+import android.widget.TextView;
 
-public class MainActivity extends Activity {
+
+public class MainActivity extends Activity implements LocationListener {
+	
+	 private TextView latituteField;
+	 private TextView longitudeField;
+	 private LocationManager locationManager;
+	 private String provider;
+
 
 	Button bSubmit;
+	Button bHelp;
 	String dest1, dest2, dest3, dest4, dest5, dest6;
 	String bName1,bName2;
 
@@ -82,6 +93,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		bSubmit = (Button) findViewById(R.id.bSubmit);
+		bHelp = (Button) findViewById(R.id.bHelp);
 
 		txtBldg1 = (EditText) findViewById(R.id.boxBldg1);
 		txtBldg2 = (EditText) findViewById(R.id.boxBldg2);
@@ -89,7 +101,34 @@ public class MainActivity extends Activity {
 		txtBldg4 = (EditText) findViewById(R.id.boxBldg4);
 		txtBldg5 = (EditText) findViewById(R.id.boxBldg5);
 		txtBldg6 = (EditText) findViewById(R.id.boxBldg6);
-			
+		
+		//================GPS user location========================
+		latituteField = (TextView) findViewById(R.id.TextView02);
+	    longitudeField = (TextView) findViewById(R.id.TextView04);
+
+	    // Get the location manager
+	    locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    // Define the criteria how to select the locatioin provider -> use
+	    // default
+	    Criteria criteria = new Criteria();
+	    provider = locationManager.getBestProvider(criteria, false);
+	    final Location location = locationManager.getLastKnownLocation(provider);
+
+	    // Initialize the location fields
+	    if (location != null) {
+	      System.out.println("Provider " + provider + " has been selected.");
+	      onLocationChanged(location);
+	      //latituteField.setVisibility(TextView.INVISIBLE);
+	      //longitudeField.setVisibility(TextView.INVISIBLE);
+	    } else {
+	      //latituteField.setText("Location not available");
+	      //longitudeField.setText("Location not available");
+	    	Toast toast = Toast.makeText(getApplicationContext(), "User Location Not Available!", Toast.LENGTH_LONG);
+			toast.setGravity(Gravity.CENTER, 0, 0);
+			toast.show();
+	    }
+		
+		//==============================================================
 		
 		
 		
@@ -428,7 +467,6 @@ public class MainActivity extends Activity {
 		bldg.add(new Building(30.62125784,-96.34020041,"ZACH"));
 		
 		
-		
 
 		bSubmit.setOnClickListener(new View.OnClickListener() {
 
@@ -447,9 +485,15 @@ public class MainActivity extends Activity {
 				/**********construst uri string for multiple locations (waypoints) ***************/
 				
 				
+				//String UserLat = latituteField.toString();
+				double UserLat = location.getLatitude();
+				
+				//String UserLon = longitudeField.toString();
+				double UserLon = location.getLongitude();
+				
 				int nameCount = 0;
 				String uri="http://maps.google.com/maps?";
-				
+				uri = uri + "saddr=" + UserLat + "," + UserLon;
 				
 				
 				for(int i=0; i<=5; i++){
@@ -459,17 +503,17 @@ public class MainActivity extends Activity {
 						for (int j = 0; j <= bldg.size() - 1; j++){
 							if (bldg.get(j).getName().equalsIgnoreCase(namesEntered.get(i))){
 								if(i==0){
-									uri = uri + "saddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
-									notfound = false;
-									nameCount++;
-									break;
-								}
-								else if(i==1){
 									uri = uri + "&daddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
 									notfound = false;
 									nameCount++;
 									break;
 								}
+								/*else if(i==1){
+									uri = uri + "&daddr=" +  bldg.get(j).getLat() + "," + bldg.get(j).getLon();
+									notfound = false;
+									nameCount++;
+									break;
+								}*/
 								else{
 									uri = uri + " to: " + bldg.get(j).getLat() + "," + bldg.get(j).getLon();
 									notfound = false;
@@ -477,7 +521,7 @@ public class MainActivity extends Activity {
 									break;
 								}
 							}							
-						}
+						}// end of j for loop
 						if(notfound){
 						//ask user to re-enter names
 						Toast toast = Toast.makeText(getApplicationContext(), "Can not find building \""+ namesEntered.get(i) + "\"!", Toast.LENGTH_LONG);
@@ -506,8 +550,8 @@ public class MainActivity extends Activity {
 						/*******make the app to focus on name that was not found instead of clearing all inputs********/
 						break;
 						}
-					}
-					else break;
+					}// end of i for loop
+					//else break;
 				}
 				
 				uri = uri + "&dirflg=w";
@@ -518,7 +562,7 @@ public class MainActivity extends Activity {
 				
 				
 				
-				if (nameCount>=2) {					
+				if (nameCount>0) {					
 					launchMap(uri);						
 				} 
 				
@@ -558,8 +602,22 @@ public class MainActivity extends Activity {
 
 			
 		}); // end of SetOnClickListener
+		
+		bHelp.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse("http://aggiemap.tamu.edu/?view=directory"));
+				
+				startActivity(intent);
+				
+			}
+		});
 
 	}// end of onCreate
+	
+		
 
 	private void getBuildingNames() {
 		// TODO Auto-generated method stub
@@ -581,5 +639,48 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	//==================GPS user location
+	/* Request updates at startup */
+	  @Override
+	  protected void onResume() {
+	    super.onResume();
+	    locationManager.requestLocationUpdates(provider, 400, 1, this);
+	  }
+
+	  /* Remove the locationlistener updates when Activity is paused */
+	  @Override
+	  protected void onPause() {
+	    super.onPause();
+	    locationManager.removeUpdates(this);
+	  }
+
+	  @Override
+	  public void onLocationChanged(Location location) {
+	    double lat = (double) (location.getLatitude());
+	    double lng = (double) (location.getLongitude());
+	    latituteField.setText(String.valueOf(lat));
+	    longitudeField.setText(String.valueOf(lng));
+	  }
+
+	  @Override
+	  public void onStatusChanged(String provider, int status, Bundle extras) {
+	    // TODO Auto-generated method stub
+
+	  }
+
+	  @Override
+	  public void onProviderEnabled(String provider) {
+	    Toast.makeText(this, "Enabled new provider " + provider,
+	        Toast.LENGTH_SHORT).show();
+
+	  }
+
+	  @Override
+	  public void onProviderDisabled(String provider) {
+	    Toast.makeText(this, "Disabled provider " + provider,
+	        Toast.LENGTH_SHORT).show();
+	  }
+
+	//=====================================
 	
 }
